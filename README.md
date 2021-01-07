@@ -1,3 +1,4 @@
+# Good one ;)
 # Maite internship epiGBS
 All code written for testing the reproducibility and reliability of epiGBS2
 
