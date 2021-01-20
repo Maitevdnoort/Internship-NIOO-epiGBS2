@@ -13,4 +13,8 @@ When you have completed this, you will enter an R environment, where you can per
 
 ## Making a new file 
 Making a new file named  barcode_inforamtion.txt with the lines 10 to 100 from a big file named process_radtags.clone.log  
-`sed -n -e '10,100p' process_radtags.clone.log > barcode_inforamtion.txt`
+`sed -n -e '10,100p' process_radtags.clone.log > barcode_inforamtion.txt`  
+
+## Merging files together
+As we mentioned earlier, there is also a way append files to the end of an existing file. Type the cat command followed by the file or files you want to add to the end of an existing file. Then, type two output redirection symbols (>>) followed by the name of the existing file you want to add to.  
+`cat file5.txt >> file4.txt`  
