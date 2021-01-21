@@ -1,16 +1,20 @@
 # @author: Maite van den Noort
-# @Date: 05-01-2021
-# @function: makes ggplot (lollipop plot) of the retained reads from library 1 and 2. 
+# @Date: 15-01-2021
+# @function: makes ggplot (lollipop plot) of the retained reads from library 1 and 2. without sample 22
 library(ggplot2)
 library(tidyr)
-
 # data from library 1 with the information about the barcodes (form the 'process_radtags.clone.log' file)
 barcode_data_lib1 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/data/Created_data_lib1/barcode_information_lib1.tsv", header = T)
 # data from library 2 with the information about the barcodes (form the 'process_radtags.clone.log' file)
 barcode_data_lib2 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/data/Created_data_lib2/barcode_information_lib2.tsv", header = T)
 
+# if there is 22 in the column Filename remove the row
+barcode_data_lib1 <- barcode_data_lib1[!grepl("22", barcode_data_lib1$Filename),]
+barcode_data_lib2 <- barcode_data_lib2[!grepl("22", barcode_data_lib2$Filename),]
+
 # output path, here are the figures saved
 outputFigures <- ("/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/results/output_data_scripts/Figures_barcodes/")
+
 
 # making subsets for every crick/watson strands from every sample form library1
 Watson1 <- barcode_data_lib1[grepl("Watson", barcode_data_lib1$Filename),]
@@ -40,6 +44,7 @@ merged$library2 <- merged$WC.y
 # making library2 negative to show it nicer in the plot
 merged$library2 <- merged$library2*-1
 
+
 # the data is transferred to another form, with all the values in Retained.norm
 data_long <- pivot_longer(merged, cols =c(library1, library2), values_to = "Retained.norm")
 # indicate the different levels (libraries)
@@ -52,10 +57,10 @@ ggplot(data_long, aes(Retained.norm, Filename1)) +
   geom_segment(aes(x = 0, y = Filename1, xend = Retained.norm, yend = Filename1), color = "grey50") +
   geom_point(aes(color = Retained_librarys), size = 2.7) + # here he knows that there are library 1 and 2 with a different collor with te size 2.7
   scale_fill_discrete(name = "Retained library's", labels = c("library 1", "library 2")) +
-  ggtitle("Retained reads per library combined") +
+  ggtitle("Retained reads per library combined without sample 22") +
   labs(x = 'percentage of retained barcodes', y = 'Filenames') +
   geom_vline(xintercept = 0, size = 0.2) # adding a vertical line on position 0 with the size 0.2
-  +  ggsave(paste(outputFigures,"percentage_Retained_barcodes_lib1_and_2_lollipop.png",sep="")) # saving the figure at the specified location
++  ggsave(paste(outputFigures,"percentage_Retained_barcodes_lib1_and_2_lollipop_min22.png",sep="")) # saving the figure at the specified location
 
 
 

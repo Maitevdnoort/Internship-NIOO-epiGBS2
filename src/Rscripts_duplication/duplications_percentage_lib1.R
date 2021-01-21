@@ -7,8 +7,11 @@ library(tidyverse)
 library(reshape2)
 library(ggplot2)
 
-# input library1 duplication percentage 
-datalib1 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/duckweed_epiGBS/output_lane2/Data_maite/Dublication_percentage_lib1.tsv")
+# data: duplicate percentage from library 1
+datalib1 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/data/Created_data_lib1/Dublication_percentage_lib1.tsv")
+
+# output path, here are the figures saved
+outputFigures <- ("/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/results/output_data_scripts/Figures_duplication/")
 
 # order library1 
 orderedlib1 <- datalib1[order(datalib1$V1),]
@@ -24,13 +27,17 @@ lib1crick2 <- orderedlib1[grepl("Crick.2", orderedlib1$sample_name),]
 lib1watson1 <- orderedlib1[grepl("Watson.1", orderedlib1$sample_name),]
 lib1watson2 <- orderedlib1[grepl("Watson.2", orderedlib1$sample_name),]
 
+# make one crick and one watson by adding the two together
+crick <- data.table(lib1crick1$dups+lib1crick2$dups)
+watson <- data.table(lib1watson1$dups+lib1watson2$dups)
+
 # making subset for the sample names, which makes it easier/clearer for the new table (library1dups)
 Sample_nameslib1 <- data.frame(do.call('rbind', strsplit(as.character(lib1crick1$sample_names),'-',fixed=TRUE)))
 names(Sample_nameslib1)[names(Sample_nameslib1) == "X1"] <- "sample_names"
 names(Sample_nameslib1)[names(Sample_nameslib1) == "X2"] <- "crick_watson"
 
 # making a new table with the subsets from library1
-library1dups <- data.table(Sample_names=Sample_nameslib1$sample_names, Crick1_dups=lib1crick1$dups, Crick2_dups=lib1crick2$dups, Watson1_dups=lib1watson1$dups, Watson2_dups=lib1watson2$dups)
+library1dups <- data.table(Sample_names=Sample_nameslib1$sample_names, Crick=crick$V1, Watson=watson$V1)
 
 # reshape the table, for an good figure
 lib1dups <- melt(library1dups, id.var="Sample_names")
@@ -42,7 +49,8 @@ ggplot(lib1dups, aes(fill=variable, y=value, x= Sample_names)) +
   ggtitle("Library 1 duplicate percentage") +
   scale_x_discrete(guide = guide_axis(angle = 90)) +
   geom_text(aes(label = value), size = 3, hjust = 0.5, vjust = 3, position = "stack") +
-  scale_fill_manual(values = c("skyblue", "cyan3", "blueviolet", "pink"))
+  scale_fill_manual(values = c("red", "skyblue")) +
+  ggsave(paste(outputFigures,"Library1_duplicated_percentage.png",sep=""))
 
 # create the figure with stackbar for library 1 from highest value to lowest
 ggplot(lib1dups, aes(fill=variable, y=value, x= reorder(Sample_names, -value))) + 
@@ -51,7 +59,8 @@ ggplot(lib1dups, aes(fill=variable, y=value, x= reorder(Sample_names, -value))) 
   ggtitle("Library 1 From higest duplicate percentage to lowest") +
   scale_x_discrete(guide = guide_axis(angle = 90)) +
   geom_text(aes(label = value), size = 3, hjust = 0.5, vjust = 3, position = "stack") +
-  scale_fill_manual(values = c("skyblue", "cyan3", "blueviolet", "pink"))
+  scale_fill_manual(values = c("red", "skyblue")) +
+  ggsave(paste(outputFigures,"Library1_duplicated_percentage_high_low.png",sep=""))
 
 # create the figure with stackbar for library 1 with A and B from the same sample next to each other
 lib1dups$Sample_names <- factor(lib1dups$Sample_names,levels = c("A27_1","B27_1","A1_0","B1_0","A13_2","B13_2","A2_2","B2_2",
@@ -64,4 +73,5 @@ ggplot(lib1dups, aes(fill=variable, y=value, x=Sample_names)) +
   ggtitle("Library 1 duplicate percentage with A and B from the same sample next to each other") +
   scale_x_discrete(guide = guide_axis(angle = 90)) +
   geom_text(aes(label = value), size = 3, hjust = 0.5, vjust = 3, position = "stack") +
-  scale_fill_manual(values = c("skyblue", "cyan3", "blueviolet", "pink"))
+  scale_fill_manual(values = c("red", "skyblue")) +
+  ggsave(paste(outputFigures,"Library1_duplicated_percentage_A_B.png",sep=""))

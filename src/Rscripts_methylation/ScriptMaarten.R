@@ -4,9 +4,9 @@
 library(ggplot2)
 
 # Input: 1: fisrt methylation.bed file, 2: second methylation.bed file, 3: ouput file, here are the ggplot saved
-args<-c("/mnt/nfs/bioinfdata/home/NIOO/maiten/duckweed_epiGBS/output_lane8/mapping/methylation.bed", 
-        "/mnt/nfs/bioinfdata/home/NIOO/maiten/duckweed_epiGBS/lane2_denovo8/epigbs2/output/mapping/methylation.bed", 
-        "/mnt/nfs/bioinfdata/home/NIOO/maiten/duckweed_epiGBS/output_data_scripts/Figures_methylation_(maarten)/output_denovo8_datalane2/")
+args<-c("/mnt/nfs/bioinfdata/home/NIOO/maiten/duckweed_epiGBS/big_denono/librar1_unknown/output_lib1_unknown/mapping/methylation.bed", 
+        "/mnt/nfs/bioinfdata/home/NIOO/maiten/duckweed_epiGBS/big_denono/library2/outputlib2/mapping/methylation.bed", 
+        "/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/results/output_data_scripts/Figures_methylation_(maarten)/Big_de_novo/")
 
 # variables are made with the different files/directorys 
 inputlib1<-args[1]
@@ -59,12 +59,12 @@ print(length(lociLib1))
 print(length(lociLib2))
 
 # making a new table named nSites, with all sites from the two input files and the shared sites
-nSites<-data.frame(method=c("lane8_denovo8","lane2_denovo8","shared"),sites=
+nSites<-data.frame(method=c("lib1","lib2","shared"),sites=
                      c(length(unique(lociLib1)),length(unique(lociLib2)),sum(lociLib1%in%lociLib2)))
 
 # making a plot of the table nSites, and saves it in the given location (see line 6)
 ggplot(nSites,aes(x=method,y=sites,label=sites))+geom_label()+
-  ggsave(paste(outputFigures,"Mappinglane8_denovo8vslane2_denovo8sites.png"))
+  ggsave(paste(outputFigures,"Mappinglib1and2sites.png"))
 
 # as.vector: Converts a distributed matrix (lib2) into a non-distributed vector (nlib2).
 nlib2<-as.vector(lib2[lociLib2Shared,grep("methylated",colnames(lib2))])
@@ -102,22 +102,22 @@ for(i in percentageDifference$diff){
 # ggplot for the difference in fraction between the two methylation files in a plot
 ggplot(percentageDifference,aes(x=log10(diff),y=perc))+geom_point()+
   xlab("Difference in fraction methylation")+ylab("Percentage of sites with lower difference")+
-  ggsave(paste(outputFigures,"Mappinglane8_denovo8vslane2_denovo8difference.png",sep=""))
+  ggsave(paste(outputFigures,"Mappinglib1and2difference.png",sep=""))
 write.table(percentageDifference,"percDiffMapping.tsv")
 
 # ggplot for the fraction methylated per site per file with filter: >300
 ggplot(dataPlot[dataPlot$totLib1>300,],aes(x=fracLib2,y=fracLib1))+geom_point(alpha=0.01)+
-  xlab("fraction methylated per site lane2_denovo8")+ylab("fraction methylated per site lane8_denovo8")+
+  xlab("fraction methylated per site lib1")+ylab("fraction methylated per site lib2")+
   ggsave(paste(outputFigures,"fractionMethylatedFilter.png",sep=""))
 
 # ggplot for the coverage per site from the two files with log10
 ggplot(dataPlot,aes(x=log10(totLib2),y=log10(totLib1)))+geom_point(alpha=0.01)+
-  xlab("log10coverage per site lane2_denovo8")+ylab("log10coverage per site lane8_denovo8")+
+  xlab("log10coverage per site lib1")+ylab("log10coverage per site lib2")+
   ggsave(paste(outputFigures,"log10coverage.png",sep=""))
 
 # ggplot for the fraction methylated per site per file 
 ggplot(dataPlot,aes(x=fracLib2,y=fracLib1))+geom_point(alpha=0.01)+
-  xlab("fraction methylated per site lane2_denovo8")+ylab("fraction methylated per site lane8_denovo8")+
+  xlab("fraction methylated per site lib1")+ylab("fraction methylated per site lib2")+
   ggsave(paste(outputFigures,"fractionMethylated.png",sep=""))
 
 
