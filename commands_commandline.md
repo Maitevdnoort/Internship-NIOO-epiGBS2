@@ -10,7 +10,7 @@ Merging files together by appending one file under the other. And creating a new
 ## Check for silly characters 
 To check files for silly charaters you don't want in your file you can use the following command:  
 `cat -A filename`  
-You can also remove those characters with the following command:
+You can also remove those characters with the following command:  
 `dos2unix filename`  
 
 ## Showing only a few lines of a zipped file
