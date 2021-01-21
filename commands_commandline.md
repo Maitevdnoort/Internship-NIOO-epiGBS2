@@ -4,21 +4,21 @@ Making a new file named  barcode_inforamtion.txt with the lines 10 to 100 from a
 `sed -n -e '10,100p' process_radtags.clone.log > barcode_inforamtion.txt`  
 
 ## Merging files together
-Merging files together by appending one file under the other. And creating a new file with the two files in it:
+Merging files together by appending one file under the other. And creating a new file with the two files in it:  
 `cat file1.txt file2.txt > newbigfile1plus2.txt`  
 
 ## Check for silly characters 
-To check files for silly charaters you don't want in your file you can use the following command: 
+To check files for silly charaters you don't want in your file you can use the following command:  
 `cat -A filename`  
 You can also remove those characters with the following command:
 `dos2unix filename`  
 
 ## Showing only a few lines of a zipped file
-If you want to show only a few lines of a zipped file without oped the whole fil use this command:
+If you want to show only a few lines of a zipped file without oped the whole fil use this command:  
 `zcat filename | sed -n 'regeln;regeln;einderegelq'`  
 
 ## Making links
-To link files to other directories without copieing the whole file:
+To link files to other directories without copieing the whole file:  
 `ln -s "path to my files" "path to link, where I want them"`  
 
 
