@@ -73,4 +73,15 @@ The samplenames are on y-as with the two librarys in the plot.
 - Function: This script makes ggplots about the retained reads for library 1 and 2. Watson and crick are here together.  
 This is also showed per sample
 - use in report
-
+## - Retained_barcodes_combined_samplenames_min22.R
+- Author: Maite van den Noort
+- Date: 14-01-2021
+- Function: This script makes ggplots about the retained reads for library 1 and 2. Watson and crick are here together.  
+This is also showed per sample but without sample 22
+- use in report
+## - Retained_barcodes_lollipop_min22.R
+- Author: Maite van den Noort
+- Date: 14-01-2021
+- Function: This script makes a lollipop plot about the retained reads. Watson and crick are here together.  
+The samplenames are on y-as with the two librarys in the plot. but without sample 22
+- use in report
