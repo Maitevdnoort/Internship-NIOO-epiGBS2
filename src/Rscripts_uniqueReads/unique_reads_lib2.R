@@ -8,10 +8,10 @@ library(reshape2)
 library(ggplot2)
 
 # input library2 unique reads 
-datalib2 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/duckweed_epiGBS/output_lane8/Data_maite/Unique_reads_lib2.tsv")
+datalib2 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/data/Created_data_lib2/Unique_reads_lib2.tsv")
 
 # output path, here are the figures saved
-outputFigures <- ("/mnt/nfs/bioinfdata/home/NIOO/maiten/duckweed_epiGBS/Output data scripts/Figures unique reads/")
+outputFigures <- ("/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/results/output_data_scripts/Figures_unique_reads/")
 
 # order library2
 orderedlib2 <- datalib2[order(datalib2$V1),]

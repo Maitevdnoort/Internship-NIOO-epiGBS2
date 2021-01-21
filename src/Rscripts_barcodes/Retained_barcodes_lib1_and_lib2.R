@@ -7,12 +7,12 @@ library(tidyverse)
 library(reshape2)
 library(ggplot2)
 # data from library 1 with the information about the barcodes (form the 'process_radtags.clone.log' file)
-barcode_data_lib1 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/internship-maite-epigbs2/data/Created_data_lib1/barcode_information_lib1.tsv", header = T)
+barcode_data_lib1 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/data/Created_data_lib1/barcode_information_lib1.tsv", header = T)
 # data from library 2 with the information about the barcodes (form the 'process_radtags.clone.log' file)
-barcode_data_lib2 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/internship-maite-epigbs2/data/Created_data_lib2/barcode_information_lib2.tsv", header = T)
+barcode_data_lib2 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/data/Created_data_lib2/barcode_information_lib2.tsv", header = T)
 
 # output path, here are the figures saved
-outputFigures <- ("/mnt/nfs/bioinfdata/home/NIOO/maiten/internship-maite-epigbs2/results/output_data_scripts/Figures_barcodes/")
+outputFigures <- ("/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/results/output_data_scripts/Figures_barcodes/")
 
 # making an extra column with percentage for both librarys
 barcode_data_lib1$Retained_pct1 = (barcode_data_lib1$Retained / sum(barcode_data_lib1$Retained)) *100

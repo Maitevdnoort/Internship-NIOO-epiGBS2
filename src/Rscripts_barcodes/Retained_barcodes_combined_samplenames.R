@@ -7,6 +7,7 @@ library(dplyr)
 library(tidyverse)
 library(reshape2)
 library(ggplot2)
+
 # data from library 1 with the information about the barcodes (form the 'process_radtags.clone.log' file)
 barcode_data_lib1 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/data/Created_data_lib1/barcode_information_lib1.tsv", header = T)
 # data from library 2 with the information about the barcodes (form the 'process_radtags.clone.log' file)
@@ -41,8 +42,6 @@ lib2D <- datalib1and2[grepl("^D", datalib1and2$Filename),]
 lib1A$Filename <- gsub("-Watson", "",lib1A$Filename)
 lib1A$Filename <- gsub("^A", "", lib1A$Filename)
 
-sum(lib1A$Retained)
-
 # making an extra column with percentage for both librarys
 lib1A$Retained_pct1 = (lib1A$Retained / sum(lib1A$Retained)) *100
 lib1B$Retained_pct2 = (lib1B$Retained / sum(lib1B$Retained)) *100
@@ -68,7 +67,7 @@ lib1and2retainedper2 <- melt(datalib1and2per2, id.var="Barcode")
 
 # making the ggplot for barcode_data_lib1 and 2 together in percentage ordered by sample names A and C(dodge)
 ggplot(lib1and2retainedper1, aes(y= value, fill= variable, x= Barcode)) + 
-  geom_bar(width=0.7, position = position_dodge(width=0.6), stat="identity", color ="gray")+ # using nice colors and making it a dogde barplot
+  geom_bar(width=0.7, position = position_dodge(width=0.6), stat="identity", color ="gray")+ # using nice colors and making it a dogde barplot with weidth 0.6
   labs(y = 'percentage of retained barcodes', x = 'Barcodes') + # giving the labels names
   ggtitle("Library 1 and 2 retained barcodes in percentage combined, sample A and B (dodge)") + # giving the plot a title
   scale_x_discrete(guide = guide_axis(angle = 70)) + # the position of the values on the x-as. 0=horizontal, 90= vertical

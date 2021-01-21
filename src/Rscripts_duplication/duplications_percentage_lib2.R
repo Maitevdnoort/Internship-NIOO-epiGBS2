@@ -7,8 +7,11 @@ library(tidyverse)
 library(reshape2)
 library(ggplot2)
 
-# input library2 percentage duplicate 
-datalib2 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/duckweed_epiGBS/output_lane8/Data_maite/Duplication_percentage_lib2.tsv")
+# data: duplicate percentage from library 2
+datalib2 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/data/Created_data_lib2/Duplication_percentage_lib2.tsv")
+
+# output path, here are the figures saved
+outputFigures <- ("/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/results/output_data_scripts/Figures_duplication/")
 
 # order library2
 orderedlib2 <- datalib2[order(datalib2$V1),]
@@ -23,13 +26,17 @@ lib2crick2 <- orderedlib2[grepl("Crick.2", orderedlib2$sample_name),]
 lib2watson1 <- orderedlib2[grepl("Watson.1", orderedlib2$sample_name),]
 lib2watson2 <- orderedlib2[grepl("Watson.2", orderedlib2$sample_name),]
 
+# make one crick and one watson by adding the two together
+crick <- data.table((lib2crick1$dups+lib2crick2$dups)/2)
+watson <- data.table((lib2watson1$dups+lib2watson2$dups)/2)
+
 # making subset for the sample names, which makes it easier/clearer for the new table (library2dups)
 Sample_nameslib2 <- data.frame(do.call('rbind', strsplit(as.character(lib2crick1$sample_names),'-',fixed=TRUE)))
 names(Sample_nameslib2)[names(Sample_nameslib2) == "X1"] <- "sample_names"
 names(Sample_nameslib2)[names(Sample_nameslib2) == "X2"] <- "crick_watson"
 
-# making a new table with the subsets from library2
-library2dups <- data.table(Sample_names=Sample_nameslib2$sample_names, Crick1_dups=lib2crick1$dups, Crick2_dups=lib2crick2$dups, Watson1_dups=lib2watson1$dups, Watson2_dups=lib2watson2$dups)
+# making a new table with the subsets from library1
+library2dups <- data.table(Sample_names=Sample_nameslib2$sample_names, Crick=crick$V1, Watson=watson$V1)
 
 # reshape the table, for an good figure
 lib2dups <- melt(library2dups, id.var="Sample_names")
@@ -41,7 +48,8 @@ ggplot(lib2dups, aes(fill=variable, y=value, x= Sample_names)) +
   ggtitle("library 2 percentage duplicate") +
   scale_x_discrete(guide = guide_axis(angle = 90)) +
   geom_text(aes(label = value), size = 3, hjust = 0.5, vjust = 3, position = "stack") +
-  scale_fill_manual(values = c("skyblue", "cyan3", "blueviolet", "pink"))
+  scale_fill_manual(values = c("red", "skyblue")) +
+  ggsave(paste(outputFigures,"Library2_duplicated_percentage.png",sep=""))
 
 # create the figure with stackbar for library 2 from highest value to lowest
 ggplot(lib2dups, aes(fill=variable, y=value, x= reorder(Sample_names, -value))) + 
@@ -50,7 +58,8 @@ ggplot(lib2dups, aes(fill=variable, y=value, x= reorder(Sample_names, -value))) 
   ggtitle("library 2 From higest percentage duplicate to lowest") +
   scale_x_discrete(guide = guide_axis(angle = 90)) +
   geom_text(aes(label = value), size = 3, hjust = 0.5, vjust = 3, position = "stack") +
-  scale_fill_manual(values = c("skyblue", "cyan3", "blueviolet", "pink"))
+  scale_fill_manual(values = c("red", "skyblue")) +
+  ggsave(paste(outputFigures,"Library2_duplicated_percentage_high_low.png",sep=""))
 
 # create the figure with stackbar for library 2 with A and B from the same sample next to each other
 lib2dups$Sample_names <- factor(lib2dups$Sample_names,levels = c("C27_1","D27_1","C1_0","D1_0","C13_2","D13_2","C2_2","D2_2",
@@ -60,7 +69,8 @@ lib2dups$Sample_names <- factor(lib2dups$Sample_names,levels = c("C27_1","D27_1"
 ggplot(lib2dups, aes(fill=variable, y=value, x=Sample_names)) + 
   geom_bar(position="stack", stat="identity")+
   labs(y = 'percentage duplicate', x = 'sample names') + 
-  ggtitle("library 2 percentage duplicate with A and B from the same sample next to each other") +
+  ggtitle("library 2 percentage duplicate with C and D from the same sample next to each other") +
   scale_x_discrete(guide = guide_axis(angle = 90)) +
-  geom_text(aes(label = value), size = 3, hjust = 0.5, vjust = 3, position = "stack") +
-  scale_fill_manual(values = c("skyblue", "cyan3", "blueviolet", "pink"))
+  geom_text(aes(label = round(value, digits = 1)), size = 3, hjust = 0.5, vjust = 3, position = "stack") +
+  scale_fill_manual(values = c("red", "skyblue")) +
+  ggsave(paste(outputFigures,"Library2_duplicated_percentage_CD.png",sep=""))

@@ -7,6 +7,7 @@ library(tidyverse)
 library(reshape2)
 library(ggplot2)
 
+cite_packages()
 # data: duplicate percentage from library 1
 datalib1 <- read.table(file ="/mnt/nfs/bioinfdata/home/NIOO/maiten/maite-internship-epigbs/data/Created_data_lib1/Dublication_percentage_lib1.tsv")
 
@@ -28,8 +29,8 @@ lib1watson1 <- orderedlib1[grepl("Watson.1", orderedlib1$sample_name),]
 lib1watson2 <- orderedlib1[grepl("Watson.2", orderedlib1$sample_name),]
 
 # make one crick and one watson by adding the two together
-crick <- data.table(lib1crick1$dups+lib1crick2$dups)
-watson <- data.table(lib1watson1$dups+lib1watson2$dups)
+crick <- data.table((lib1crick1$dups+lib1crick2$dups)/2)
+watson <- data.table((lib1watson1$dups+lib1watson2$dups)/2)
 
 # making subset for the sample names, which makes it easier/clearer for the new table (library1dups)
 Sample_nameslib1 <- data.frame(do.call('rbind', strsplit(as.character(lib1crick1$sample_names),'-',fixed=TRUE)))
