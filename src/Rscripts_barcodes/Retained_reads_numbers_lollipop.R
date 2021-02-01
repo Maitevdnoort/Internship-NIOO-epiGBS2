@@ -1,5 +1,5 @@
 # @author: Maite van den Noort
-# @Date: 28-01-2021
+# @Date: 08-11-2020, last modified: 20-01-2021
 # @function: makes ggplot (lollipop plot) of the retained reads from library 1 and 2. 
 library(ggplot2)
 library(tidyr)
