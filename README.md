@@ -45,6 +45,10 @@ Here are all the scripts that do something with methylation
 
 # Rscripts_barcodes
 Here are all the scripts making ggplots about the reatained reads (barcodes)
+## - Retained_reads_numbers_lollipop.R
+- Author: Maite van den Noort
+- Date: 08-11-2020, last modified: 20-01-2021
+- Function: makes a lollipop plot with the number of retained reads for both libraries
 ## - Retained_barcodes_samplenames.R
 - Author: Maite van den Noort
 - Date: 30-12-2020
